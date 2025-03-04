@@ -1,15 +1,4 @@
-.client-details + .client-details {
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 1px dashed var(--light-gold);
-}
-
-.client-subtitle {
-    color: var(--primary-color);
-    margin-bottom: 15px;
-    font-size: 18px;
-    text-align: center;
-}* {
+* {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -202,6 +191,19 @@ body {
     padding: 2px 5px;
 }
 
+.client-details + .client-details {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--light-gold);
+}
+
+.client-subtitle {
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    font-size: 18px;
+    text-align: center;
+}
+
 .property-details {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -233,6 +235,7 @@ body {
     font-weight: bold;
     color: var(--primary-color);
     position: relative;
+    letter-spacing: 1px;
 }
 
 .quote-title:before, .quote-title:after {
@@ -262,6 +265,7 @@ body {
     padding-bottom: 8px;
     color: var(--primary-color);
     font-size: 20px;
+    letter-spacing: 0.5px; /* מוסיף מרווח בין אותיות בכותרות */
 }
 
 .client-details, .loan-details {
@@ -282,6 +286,35 @@ body {
     font-weight: bold;
     margin-bottom: 8px;
     color: var(--primary-dark);
+}
+
+.detail-label::after {
+    content: " ";
+}
+
+.hidden-section {
+    display: none !important;
+}
+
+.hidden-field {
+    display: none !important;
+}
+
+.payment-details {
+    display: grid;
+    /* grid-template-columns: 1fr 1fr; */
+    gap: 20px;
+    background-color: #fafafa;
+    padding: 20px;
+    border-radius: 5px;
+    border: 1px solid #eee;
+}
+
+.service-details {
+    background-color: #fafafa;
+    padding: 20px;
+    border-radius: 5px;
+    border: 1px solid #eee;
 }
 
 .loan-options {
