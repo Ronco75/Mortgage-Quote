@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>יוצר הצעות מחיר לייעוץ משכנתאות</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h2>הגדרות הצעת המחיר</h2>
+            
+            <div class="sidebar-section">
+                <h3>פרטי לקוח</h3>
+                <div id="clients-container">
+                    <div class="client-form">
+                        <div class="client-header">
+                            <span class="client-title">לווה 1</span>
+                            <button type="button" class="remove-client">הסר</button>
+                        </div>
+                        
+                        <label for="client-name">שם הלקוח</label>
+                        <input type="text" id="client-name" placeholder="שם הלקוח" class="client-name-input">
+                        
+                        <label for="client-phone">טלפון</label>
+                        <input type="text" id="client-phone" placeholder="טלפון">
+                        
+                        <label for="client-address">כתובת</label>
+                        <input type="text" id="client-address" placeholder="כתובת">
+                        
+                        <label for="client-city">עיר</label>
+                        <input type="text" id="client-city" placeholder="עיר">
+                    </div>
+                </div>
+                <button id="add-client" class="secondary-button">הוסף לווה נוסף</button>
+            </div>
+            
+            <div class="sidebar-section">
+                <h3>פרטי השירות</h3>
+                <label for="service-type">סוג השירות</label>
+                <select id="service-type">
+                    <option value="ייעוץ משכנתא לרכישת דירה">ייעוץ משכנתא לרכישת דירה</option>
+                    <option value="ייעוץ למחזור משכנתא">ייעוץ למחזור משכנתא</option>
+                    <option value="ייעוץ למשכנתא להשקעה">ייעוץ למשכנתא להשקעה</option>
+                    <option value="ליווי בתהליך רכישת דירה">ליווי בתהליך רכישת דירה</option>
+                    <option value="ליווי פיננסי אישי">ליווי פיננסי אישי</option>
+                </select>
+            </div>
+            
+            <div class="sidebar-section">
+                <h3>תנאי תשלום</h3>
+                <select id="payment-terms">
+                    <option value="50% במעמד החתימה, 50% לקראת החתימות">50% במעמד החתימה, 50% לקראת החתימות</option>
+                    <option value="2 המחאות במעמד החתימה">2 המחאות במעמד החתימה</option>
+                    <option value="50% באישור עקרוני, 50% לקראת החתימות">50% באישור עקרוני, 50% לקראת החתימות</option>
+                </select>
+            </div>
+            
+            <div class="sidebar-section">
+                <h3>הערות</h3>
+                <textarea id="quote-notes" rows="4" placeholder="הערות נוספות להצעת המחיר"></textarea>
+            </div>
+            
+            <div class="sidebar-section">
+                <h3>תאריך תוקף</h3>
+                <input type="date" id="quote-expiry">
+            </div>
+            
+            <div class="sidebar-section">
+                <h3>דמי ייעוץ</h3>
+                <label for="advisory-fee">עלות הייעוץ (₪)</label>
+                <input type="number" id="advisory-fee" placeholder="עלות הייעוץ">
+            </div>
+            
+            <button id="generate-pdf">הורד כ-PDF</button>
+            <button id="reset-form">נקה טופס</button>
+        </div>
+        
+        <div class="main-content">
+            <div class="quote-container" id="quote-to-print">
+                <div class="quote-header">
+                    <div>
+                        <h2 id="display-company">הדר משכנתאות וליווי פיננסי</h2>
+                        <p id="display-advisor-name">תומר הדר, יועץ משכנתאות</p>
+                        <p id="display-advisor-phone">052-5218274</p>
+                        <p id="display-advisor-email">tomerhadar1@gmail.com</p>
+                        <p class="website-link"><a class="website-link-a" href="https://hadar-mort.com/" target="_blank">hadar-mort.com</a></p>
+                    </div>
+                    <img id="display-logo" class="quote-logo" src="logo.png" alt="הדר משכנתאות">
+                </div>
+                
+                <div class="quote-title">הצעת מחיר לייעוץ משכנתא</div>
+                
+                <div id="client-section" class="quote-section hideable-section">
+                    <h3>פרטי הלקוח</h3>
+                    <div id="display-clients-container">
+                        <div class="client-details">
+                            <div class="detail-item">
+                                <div class="detail-label">שם הלקוח</div>
+                                <div id="display-client-name">_________________</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">טלפון</div>
+                                <div id="display-client-phone">_________________</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">כתובת</div>
+                                <div id="display-client-address">_________________</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">עיר</div>
+                                <div id="display-client-city">_________________</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="service-section" class="quote-section hideable-section">
+                    <h3>השירות המוצע</h3>
+                    <div class="service-details">
+                        <div class="detail-item">
+                            <div class="detail-label">סוג השירות</div>
+                            <div id="display-service-type">_________________</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="payment-section" class="quote-section">
+                    <h3>עלות השירות ותנאי תשלום</h3>
+                    <div class="payment-details">
+                        <div class="detail-item">
+                            <div class="detail-label">עלות הייעוץ</div>
+                            <div id="display-fee">₪ 0</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">תנאי תשלום</div>
+                            <div id="display-payment-terms">_________________</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="notes-section" class="quote-section hideable-section">
+                    <h3>הערות והבהרות</h3>
+                    <p id="display-notes">_________________</p>
+                </div>
+                
+                <div class="quote-footer">
+                    <p>הצעה זו בתוקף עד לתאריך <span id="display-expiry">_________________</span></p>
+                    <p>הצעה זו כפופה לתנאים המפורטים לעיל. במקרה של סתירה, יגברו התנאים המפורטים במסמך זה.</p>
+                </div>
+                
+                <div class="quote-signature">
+                    <div>
+                        <p>חתימת הלקוח</p>
+                        <div class="signature-line"></div>
+                    </div>
+                    <div>
+                        <p>חתימת היועץ</p>
+                        <div class="signature-line"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
