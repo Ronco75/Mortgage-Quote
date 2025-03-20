@@ -201,8 +201,14 @@ body {
     color: var(--primary-color);
     margin-bottom: 15px;
     font-size: 18px;
-    text-align: center;
+    text-align: right;
+    font-weight: bold;
+    border-bottom: 1px solid var(--light-gold);
+    padding-bottom: 8px;
+    width: 100%;
+    grid-column: 1 / -1;
 }
+
 
 .property-details {
     display: grid;
