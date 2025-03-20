@@ -169,6 +169,308 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.getElementById('generate-pdf').addEventListener('click', exportQuoteAsHTML);
 
+    // function exportQuoteAsHTML() {
+    //     const clientNameInput = document.querySelector('.client-name-input');
+    //     let fileName = 'הצעת מחיר ייעוץ משכנתא';
+        
+    //     if (clientNameInput && clientNameInput.value) {
+    //         fileName += ' - ' + clientNameInput.value;
+    //     }
+        
+    //     // סגירת תפריט מובייל אם פתוח
+    //     if (window.innerWidth <= 768 && document.querySelector('.sidebar.active')) {
+    //         document.querySelector('.sidebar').classList.remove('active');
+    //         document.querySelector('.overlay').classList.remove('active');
+    //         document.getElementById('menu-toggle').textContent = 'תפריט';
+    //         document.body.style.overflow = '';
+    //     }
+        
+    //     const printWindow = window.open('', '_blank');
+        
+    //     if (!printWindow) {
+    //         alert('הדפדפן חסם את החלון הקופץ. אנא אפשר חלונות קופצים ונסה שנית.');
+    //         return;
+    //     }
+        
+    //     let htmlContent = `
+    //     <!DOCTYPE html>
+    //     <html lang="he" dir="rtl">
+    //     <head>
+    //         <meta charset="UTF-8">
+    //         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    //         <title>${fileName}</title>
+    //         <style>
+    //     `;
+        
+    //     htmlContent += `
+    //         * {
+    //             box-sizing: border-box;
+    //             margin: 0;
+    //             padding: 0;
+    //             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    //         }
+            
+    //         :root {
+    //             --primary-color: #c0aa76;
+    //             --primary-dark: #a18e5e;
+    //             --secondary-color: #2c3e50;
+    //             --light-gold: #e6dcc3;
+    //             --text-dark: #333333;
+    //             --text-light: #ffffff;
+    //         }
+            
+    //         body {
+    //             direction: rtl;
+    //             background-color: white;
+    //             padding: 20mm;
+    //             max-width: 210mm;
+    //             margin: 0 auto;
+    //         }
+            
+    //         .quote-container {
+    //             background-color: white;
+    //             border-radius: 5px;
+    //         }
+            
+    //         .quote-header {
+    //             display: flex;
+    //             justify-content: space-between;
+    //             margin-bottom: 30px;
+    //             align-items: center;
+    //             padding-bottom: 20px;
+    //             border-bottom: 2px solid var(--light-gold);
+    //         }
+            
+    //         .quote-logo {
+    //             max-width: 180px;
+    //             max-height: 120px;
+    //         }
+            
+    //         .quote-title {
+    //             text-align: center;
+    //             margin: 40px 0;
+    //             font-size: 28px;
+    //             font-weight: bold;
+    //             color: var(--primary-color);
+    //             position: relative;
+    //             letter-spacing: 1px;
+    //         }
+            
+    //         .quote-section {
+    //             margin-bottom: 30px;
+    //         }
+            
+    //         .quote-section h3 {
+    //             margin-bottom: 15px;
+    //             border-bottom: 2px solid var(--light-gold);
+    //             padding-bottom: 8px;
+    //             color: var(--primary-color);
+    //             font-size: 20px;
+    //             letter-spacing: 0.5px;
+    //         }
+            
+    //         .client-details, .loan-details {
+    //             display: grid;
+    //             grid-template-columns: 1fr 1fr;
+    //             gap: 20px;
+    //             background-color: #fafafa;
+    //             padding: 20px;
+    //             border-radius: 5px;
+    //             border: 1px solid #eee;
+    //         }
+            
+    //         .detail-item {
+    //             margin-bottom: 15px;
+    //         }
+            
+    //         .detail-label {
+    //             font-weight: bold;
+    //             margin-bottom: 8px;
+    //             color: var(--primary-dark);
+    //         }
+            
+    //         .detail-label::after {
+    //             content: " ";
+    //         }
+            
+    //         .hidden-section, .hidden-field {
+    //             display: none !important;
+    //         }
+            
+    //         .payment-details, .service-details {
+    //             background-color: #fafafa;
+    //             padding: 20px;
+    //             border-radius: 5px;
+    //             border: 1px solid #eee;
+    //         }
+            
+    //         .quote-footer {
+    //             margin-top: 40px;
+    //             text-align: center;
+    //             font-size: 14px;
+    //             color: #777;
+    //             border-top: 2px solid var(--light-gold);
+    //             padding-top: 20px;
+    //         }
+            
+    //         .quote-signature {
+    //             margin-top: 60px;
+    //             display: flex;
+    //             justify-content: space-between;
+    //         }
+            
+    //         .signature-line {
+    //             width: 200px;
+    //             border-top: 1px solid #000;
+    //             margin-top: 5px;
+    //         }
+            
+    //         .website-link {
+    //             color: var(--primary-color);
+    //         }
+            
+    //         .client-subtitle {
+    //             color: var(--primary-color);
+    //             margin-bottom: 15px;
+    //             font-size: 18px;
+    //             text-align: center;
+    //         }
+            
+    //         @media print {
+    //             body {
+    //                 padding: 0;
+    //             }
+                
+    //             .print-controls {
+    //                 display: none;
+    //             }
+    //         }
+            
+    //         /* רספונסיביות להדפסה */
+    //         @media screen and (max-width: 768px) {
+    //             body {
+    //                 padding: 10px;
+    //             }
+                
+    //             .client-details, .loan-details {
+    //                 grid-template-columns: 1fr;
+    //             }
+                
+    //             .quote-signature {
+    //                 flex-direction: column;
+    //                 gap: 30px;
+    //                 align-items: center;
+    //             }
+                
+    //             .signature-line {
+    //                 width: 100%;
+    //                 max-width: 200px;
+    //             }
+                
+    //             .quote-header {
+    //                 flex-direction: column-reverse;
+    //                 text-align: center;
+    //             }
+                
+    //             .quote-logo {
+    //                 margin-bottom: 15px;
+    //             }
+    //         }
+            
+    //         .print-controls {
+    //             position: fixed;
+    //             top: 20px;
+    //             left: 20px;
+    //             background: #fff;
+    //             padding: 10px;
+    //             border: 1px solid #ddd;
+    //             border-radius: 5px;
+    //             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    //             z-index: 1000;
+    //         }
+            
+    //         .print-btn {
+    //             padding: 8px 15px;
+    //             background-color: var(--primary-color);
+    //             color: var(--text-dark);
+    //             border: none;
+    //             border-radius: 4px;
+    //             cursor: pointer;
+    //             font-weight: 600;
+    //             margin-right: 10px;
+    //         }
+            
+    //         .save-btn {
+    //             padding: 8px 15px;
+    //             background-color: var(--secondary-color);
+    //             color: white;
+    //             border: none;
+    //             border-radius: 4px;
+    //             cursor: pointer;
+    //             font-weight: 600;
+    //         }
+    //     `;
+        
+    //     htmlContent += `
+    //         </style>
+    //     </head>
+    //     <body>
+    //         <div class="print-controls">
+    //             <button class="print-btn" onclick="window.print()">הדפס</button>
+    //         </div>
+    //         <div class="quote-container">
+    //     `;
+        
+    //     const quoteContent = document.getElementById('quote-to-print');
+        
+    //     const tempContainer = document.createElement('div');
+    //     tempContainer.innerHTML = quoteContent.innerHTML;
+        
+    //     const logoImg = tempContainer.querySelector('.quote-logo');
+    //     if (logoImg) {
+    //         const logoSrc = logoImg.getAttribute('src');
+    //         if (logoSrc && !logoSrc.startsWith('data:') && !logoSrc.startsWith('http')) {
+    //             // בניית נתיב מלא ללוגו באמצעות URL הנוכחי
+    //             const baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
+    //             logoImg.setAttribute('src', baseUrl + logoSrc);
+    //         }
+    //     }
+        
+    //     const sections = tempContainer.querySelectorAll('.quote-section');
+    //     sections.forEach(section => {
+    //         const hasContent = Array.from(section.querySelectorAll('.detail-item')).some(item => 
+    //             !item.classList.contains('hidden-field'));
+            
+    //         if (!hasContent) {
+    //             section.classList.add('hidden-section');
+    //         }
+    //     });
+        
+    //     htmlContent += tempContainer.innerHTML;
+        
+    //     htmlContent += `
+    //         </div>
+    //         <script>            
+    //             // הסתרת כפתורי ההדפסה והשמירה בעת הדפסה
+    //             window.addEventListener('beforeprint', function() {
+    //                 document.querySelector('.print-controls').style.display = 'none';
+    //             });
+                
+    //             window.addEventListener('afterprint', function() {
+    //                 document.querySelector('.print-controls').style.display = 'block';
+    //             });
+    //         </script>
+    //     </body>
+    //     </html>`;
+        
+    //     printWindow.document.open();
+    //     printWindow.document.write(htmlContent);
+    //     printWindow.document.close();
+        
+    //     printWindow.addEventListener('load', function() {
+    //         printWindow.focus();
+    //     });
+    // }
     function exportQuoteAsHTML() {
         const clientNameInput = document.querySelector('.client-name-input');
         let fileName = 'הצעת מחיר ייעוץ משכנתא';
@@ -219,37 +521,57 @@ document.addEventListener('DOMContentLoaded', function() {
                 --text-light: #ffffff;
             }
             
+            @page {
+                size: A4;
+                margin: 0;
+            }
+            
             body {
                 direction: rtl;
                 background-color: white;
-                padding: 20mm;
-                max-width: 210mm;
+                width: 210mm;
+                min-height: 297mm;
                 margin: 0 auto;
+                padding: 0;
+                overflow-x: hidden;
+            }
+            
+            .print-page {
+                width: 210mm;
+                min-height: 297mm;
+                padding: 10mm;
+                position: relative;
+                box-sizing: border-box;
+                page-break-after: avoid;
+                page-break-inside: avoid;
             }
             
             .quote-container {
                 background-color: white;
                 border-radius: 5px;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
             }
             
             .quote-header {
                 display: flex;
                 justify-content: space-between;
-                margin-bottom: 30px;
+                margin-bottom: 20px;
                 align-items: center;
-                padding-bottom: 20px;
+                padding-bottom: 15px;
                 border-bottom: 2px solid var(--light-gold);
             }
             
             .quote-logo {
-                max-width: 180px;
-                max-height: 120px;
+                max-width: 150px;
+                max-height: 100px;
             }
             
             .quote-title {
                 text-align: center;
-                margin: 40px 0;
-                font-size: 28px;
+                margin: 20px 0;
+                font-size: 24px;
                 font-weight: bold;
                 color: var(--primary-color);
                 position: relative;
@@ -257,36 +579,44 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             .quote-section {
-                margin-bottom: 30px;
+                margin-bottom: 20px;
             }
             
             .quote-section h3 {
-                margin-bottom: 15px;
+                margin-bottom: 10px;
                 border-bottom: 2px solid var(--light-gold);
-                padding-bottom: 8px;
+                padding-bottom: 6px;
                 color: var(--primary-color);
-                font-size: 20px;
+                font-size: 18px;
                 letter-spacing: 0.5px;
             }
             
             .client-details, .loan-details {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
-                gap: 20px;
+                gap: 15px;
                 background-color: #fafafa;
-                padding: 20px;
+                padding: 15px;
                 border-radius: 5px;
                 border: 1px solid #eee;
             }
             
             .detail-item {
-                margin-bottom: 15px;
+                margin-bottom: 10px;
             }
             
             .detail-label {
                 font-weight: bold;
-                margin-bottom: 8px;
+                margin-bottom: 5px;
                 color: var(--primary-dark);
+                font-size: 14px;
+            }
+            
+            .client-subtitle {
+                color: var(--primary-color);
+                margin-bottom: 10px;
+                font-size: 16px;
+                text-align: center;
             }
             
             .detail-label::after {
@@ -299,28 +629,33 @@ document.addEventListener('DOMContentLoaded', function() {
             
             .payment-details, .service-details {
                 background-color: #fafafa;
-                padding: 20px;
+                padding: 15px;
                 border-radius: 5px;
                 border: 1px solid #eee;
             }
             
-            .quote-footer {
-                margin-top: 40px;
-                text-align: center;
+            #display-notes {
+                white-space: pre-line;
                 font-size: 14px;
+            }
+            
+            .quote-footer {
+                margin-top: auto;
+                text-align: center;
+                font-size: 12px;
                 color: #777;
                 border-top: 2px solid var(--light-gold);
-                padding-top: 20px;
+                padding-top: 15px;
             }
             
             .quote-signature {
-                margin-top: 60px;
+                margin-top: 30px;
                 display: flex;
                 justify-content: space-between;
             }
             
             .signature-line {
-                width: 200px;
+                width: 180px;
                 border-top: 1px solid #000;
                 margin-top: 5px;
             }
@@ -329,20 +664,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 color: var(--primary-color);
             }
             
-            .client-subtitle {
+            .website-link-a {
                 color: var(--primary-color);
-                margin-bottom: 15px;
-                font-size: 18px;
-                text-align: center;
+                text-decoration: none;
             }
             
             @media print {
                 body {
                     padding: 0;
+                    margin: 0;
                 }
                 
                 .print-controls {
                     display: none;
+                }
+                
+                .print-page {
+                    margin: 0;
+                    padding: 10mm;
+                    border: none;
+                    box-shadow: none;
                 }
             }
             
@@ -418,7 +759,8 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="print-controls">
                 <button class="print-btn" onclick="window.print()">הדפס</button>
             </div>
-            <div class="quote-container">
+            <div class="print-page">
+                <div class="quote-container">
         `;
         
         const quoteContent = document.getElementById('quote-to-print');
@@ -436,6 +778,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         
+        // הסתרת סעיפים ריקים
         const sections = tempContainer.querySelectorAll('.quote-section');
         sections.forEach(section => {
             const hasContent = Array.from(section.querySelectorAll('.detail-item')).some(item => 
@@ -446,9 +789,23 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
+        // התאמת גודל טקסט בהתאם לכמות הלווים
+        const clientsCount = tempContainer.querySelectorAll('.client-details').length;
+        if (clientsCount > 2) {
+            htmlContent = htmlContent.replace('font-size: 14px;', 'font-size: 12px;');
+        }
+        
+        // הקטנת מרווחים אם יש הרבה טקסט בהערות
+        const notes = document.getElementById('quote-notes').value;
+        if (notes && notes.length > 200) {
+            htmlContent = htmlContent.replace('margin-bottom: 20px;', 'margin-bottom: 15px;');
+            htmlContent = htmlContent.replace('padding: 15px;', 'padding: 10px;');
+        }
+        
         htmlContent += tempContainer.innerHTML;
         
         htmlContent += `
+                </div>
             </div>
             <script>            
                 // הסתרת כפתורי ההדפסה והשמירה בעת הדפסה
@@ -458,6 +815,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 window.addEventListener('afterprint', function() {
                     document.querySelector('.print-controls').style.display = 'block';
+                });
+                
+                // התאמת גובה הדף לתוכן
+                window.addEventListener('load', function() {
+                    const quotePage = document.querySelector('.print-page');
+                    const quoteContainer = document.querySelector('.quote-container');
+                    
+                    // אם התוכן חורג מהגובה המקסימלי, הקטן את הגופן וצמצם מרווחים
+                    const maxHeight = 277; // מ"מ (297 פחות שוליים)
+                    if (quotePage.offsetHeight > maxHeight * 3.779527559) { // המרה מ-mm ל-px
+                        document.body.style.fontSize = '12px';
+                        document.querySelectorAll('.quote-section').forEach(section => {
+                            section.style.marginBottom = '10px';
+                        });
+                        document.querySelectorAll('.detail-item').forEach(item => {
+                            item.style.marginBottom = '5px';
+                        });
+                    }
                 });
             </script>
         </body>
