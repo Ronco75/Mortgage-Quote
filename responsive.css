@@ -1,0 +1,212 @@
+
+html, body {
+    overflow-x: hidden;
+}
+
+.menu-toggle {
+    display: none;
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    z-index: 1000;
+    background-color: var(--primary-color);
+    color: var(--text-dark);
+    border: none;
+    border-radius: 4px;
+    padding: 8px 15px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.container {
+    transition: all 0.3s ease;
+}
+
+.sidebar {
+    transition: all 0.3s ease;
+}
+
+.main-content {
+    transition: all 0.3s ease;
+}
+
+.quote-container {
+    width: 100%;
+    max-width: 210mm;
+    margin: 0 auto;
+    transition: all 0.3s ease;
+}
+
+.client-details, 
+.loan-details,
+.property-details {
+    gap: 15px;
+}
+
+.quote-header {
+    flex-wrap: wrap;
+}
+
+.quote-logo {
+    max-width: 100%;
+    height: auto;
+}
+
+.responsive-table-container {
+    width: 100%;
+    overflow-x: auto;
+    margin-bottom: 20px;
+}
+
+@media (max-width: 992px) {
+    .sidebar input, 
+    .sidebar textarea, 
+    .sidebar select,
+    .sidebar button {
+        padding: 12px;
+        font-size: 16px; 
+    }
+}
+
+@media (max-width: 992px) {
+    .quote-title:before, 
+    .quote-title:after {
+        width: 15%;
+    }
+    
+    .quote-container {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        max-width: 100%;
+        position: fixed;
+        top: 0;
+        right: -100%;
+        height: 100vh;
+        z-index: 999;
+        overflow-y: auto;
+    }
+    
+    .sidebar.active {
+        right: 0;
+    }
+    
+    .main-content {
+        padding-top: 60px; 
+        width: 100%;
+    }
+    
+    .menu-toggle {
+        display: block;
+    }
+    
+    .quote-title:before, 
+    .quote-title:after {
+        display: none;
+    }
+    
+    .quote-signature {
+        flex-direction: column;
+        gap: 30px;
+        align-items: center;
+    }
+    
+    .client-form {
+        padding: 15px 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        font-size: 14px;
+    }
+    
+    .sidebar h2 {
+        font-size: 20px;
+    }
+    
+    .sidebar h3, 
+    .quote-section h3 {
+        font-size: 18px;
+    }
+    
+    .quote-title {
+        font-size: 22px;
+        margin: 20px 0;
+    }
+    
+    .quote-container {
+        padding: 10px;
+    }
+    
+    .client-details, 
+    .loan-details,
+    .property-details,
+    .payment-details {
+        grid-template-columns: 1fr;
+    }
+    
+    .detail-item {
+        margin-bottom: 10px;
+    }
+    
+    .quote-header {
+        flex-direction: column-reverse;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .quote-logo {
+        margin-bottom: 15px;
+    }
+    
+    .client-form .client-header {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .remove-client {
+        width: 100%;
+        margin-top: 5px;
+    }
+}
+
+@media print {
+    .menu-toggle {
+        display: none;
+    }
+    
+    .quote-container {
+        padding: 0;
+        box-shadow: none;
+        border: none;
+    }
+    
+    .quote-header {
+        flex-direction: row;
+    }
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+}
+
+.overlay.active {
+    display: block;
+}

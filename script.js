@@ -158,276 +158,319 @@ document.addEventListener('DOMContentLoaded', function() {
         updateDisplayField(`client-city-${clientCount}`, `display-client-city-${clientCount}`);
         
         newClientForm.querySelector('.remove-client').addEventListener('click', removeClient);
+        
+        // גלילה לטופס החדש במובייל
+        if (window.innerWidth <= 768 && document.querySelector('.sidebar.active')) {
+            setTimeout(function() {
+                newClientForm.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        }
     });
 
-document.getElementById('generate-pdf').addEventListener('click', exportQuoteAsHTML);
+    document.getElementById('generate-pdf').addEventListener('click', exportQuoteAsHTML);
 
-function exportQuoteAsHTML() {
-    const clientNameInput = document.querySelector('.client-name-input');
-    let fileName = 'הצעת מחיר ייעוץ משכנתא';
-    
-    if (clientNameInput && clientNameInput.value) {
-        fileName += ' - ' + clientNameInput.value;
-    }
-    
-    const printWindow = window.open('', '_blank');
-    
-    if (!printWindow) {
-        alert('הדפדפן חסם את החלון הקופץ. אנא אפשר חלונות קופצים ונסה שנית.');
-        return;
-    }
-    
-    let htmlContent = `
-    <!DOCTYPE html>
-    <html lang="he" dir="rtl">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>${fileName}</title>
-        <style>
-    `;
-    
-    htmlContent += `
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    function exportQuoteAsHTML() {
+        const clientNameInput = document.querySelector('.client-name-input');
+        let fileName = 'הצעת מחיר ייעוץ משכנתא';
+        
+        if (clientNameInput && clientNameInput.value) {
+            fileName += ' - ' + clientNameInput.value;
         }
         
-        :root {
-            --primary-color: #c0aa76;
-            --primary-dark: #a18e5e;
-            --secondary-color: #2c3e50;
-            --light-gold: #e6dcc3;
-            --text-dark: #333333;
-            --text-light: #ffffff;
+        // סגירת תפריט מובייל אם פתוח
+        if (window.innerWidth <= 768 && document.querySelector('.sidebar.active')) {
+            document.querySelector('.sidebar').classList.remove('active');
+            document.querySelector('.overlay').classList.remove('active');
+            document.getElementById('menu-toggle').textContent = 'תפריט';
+            document.body.style.overflow = '';
         }
         
-        body {
-            direction: rtl;
-            background-color: white;
-            padding: 20mm;
-            max-width: 210mm;
-            margin: 0 auto;
+        const printWindow = window.open('', '_blank');
+        
+        if (!printWindow) {
+            alert('הדפדפן חסם את החלון הקופץ. אנא אפשר חלונות קופצים ונסה שנית.');
+            return;
         }
         
-        .quote-container {
-            background-color: white;
-            border-radius: 5px;
-        }
+        let htmlContent = `
+        <!DOCTYPE html>
+        <html lang="he" dir="rtl">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>${fileName}</title>
+            <style>
+        `;
         
-        .quote-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 30px;
-            align-items: center;
-            padding-bottom: 20px;
-            border-bottom: 2px solid var(--light-gold);
-        }
-        
-        .quote-logo {
-            max-width: 180px;
-            max-height: 120px;
-        }
-        
-        .quote-title {
-            text-align: center;
-            margin: 40px 0;
-            font-size: 28px;
-            font-weight: bold;
-            color: var(--primary-color);
-            position: relative;
-            letter-spacing: 1px;
-        }
-        
-        .quote-section {
-            margin-bottom: 30px;
-        }
-        
-        .quote-section h3 {
-            margin-bottom: 15px;
-            border-bottom: 2px solid var(--light-gold);
-            padding-bottom: 8px;
-            color: var(--primary-color);
-            font-size: 20px;
-            letter-spacing: 0.5px;
-        }
-        
-        .client-details, .loan-details {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            background-color: #fafafa;
-            padding: 20px;
-            border-radius: 5px;
-            border: 1px solid #eee;
-        }
-        
-        .detail-item {
-            margin-bottom: 15px;
-        }
-        
-        .detail-label {
-            font-weight: bold;
-            margin-bottom: 8px;
-            color: var(--primary-dark);
-        }
-        
-        .detail-label::after {
-            content: " ";
-        }
-        
-        .hidden-section, .hidden-field {
-            display: none !important;
-        }
-        
-        .payment-details, .service-details {
-            background-color: #fafafa;
-            padding: 20px;
-            border-radius: 5px;
-            border: 1px solid #eee;
-        }
-        
-        .quote-footer {
-            margin-top: 40px;
-            text-align: center;
-            font-size: 14px;
-            color: #777;
-            border-top: 2px solid var(--light-gold);
-            padding-top: 20px;
-        }
-        
-        .quote-signature {
-            margin-top: 60px;
-            display: flex;
-            justify-content: space-between;
-        }
-        
-        .signature-line {
-            width: 200px;
-            border-top: 1px solid #000;
-            margin-top: 5px;
-        }
-        
-        .website-link {
-            color: var(--primary-color);
-        }
-        
-        .client-subtitle {
-            color: var(--primary-color);
-            margin-bottom: 15px;
-            font-size: 18px;
-            text-align: center;
-        }
-        
-        @media print {
-            body {
+        htmlContent += `
+            * {
+                box-sizing: border-box;
+                margin: 0;
                 padding: 0;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            }
+            
+            :root {
+                --primary-color: #c0aa76;
+                --primary-dark: #a18e5e;
+                --secondary-color: #2c3e50;
+                --light-gold: #e6dcc3;
+                --text-dark: #333333;
+                --text-light: #ffffff;
+            }
+            
+            body {
+                direction: rtl;
+                background-color: white;
+                padding: 20mm;
+                max-width: 210mm;
+                margin: 0 auto;
+            }
+            
+            .quote-container {
+                background-color: white;
+                border-radius: 5px;
+            }
+            
+            .quote-header {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 30px;
+                align-items: center;
+                padding-bottom: 20px;
+                border-bottom: 2px solid var(--light-gold);
+            }
+            
+            .quote-logo {
+                max-width: 180px;
+                max-height: 120px;
+            }
+            
+            .quote-title {
+                text-align: center;
+                margin: 40px 0;
+                font-size: 28px;
+                font-weight: bold;
+                color: var(--primary-color);
+                position: relative;
+                letter-spacing: 1px;
+            }
+            
+            .quote-section {
+                margin-bottom: 30px;
+            }
+            
+            .quote-section h3 {
+                margin-bottom: 15px;
+                border-bottom: 2px solid var(--light-gold);
+                padding-bottom: 8px;
+                color: var(--primary-color);
+                font-size: 20px;
+                letter-spacing: 0.5px;
+            }
+            
+            .client-details, .loan-details {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+                background-color: #fafafa;
+                padding: 20px;
+                border-radius: 5px;
+                border: 1px solid #eee;
+            }
+            
+            .detail-item {
+                margin-bottom: 15px;
+            }
+            
+            .detail-label {
+                font-weight: bold;
+                margin-bottom: 8px;
+                color: var(--primary-dark);
+            }
+            
+            .detail-label::after {
+                content: " ";
+            }
+            
+            .hidden-section, .hidden-field {
+                display: none !important;
+            }
+            
+            .payment-details, .service-details {
+                background-color: #fafafa;
+                padding: 20px;
+                border-radius: 5px;
+                border: 1px solid #eee;
+            }
+            
+            .quote-footer {
+                margin-top: 40px;
+                text-align: center;
+                font-size: 14px;
+                color: #777;
+                border-top: 2px solid var(--light-gold);
+                padding-top: 20px;
+            }
+            
+            .quote-signature {
+                margin-top: 60px;
+                display: flex;
+                justify-content: space-between;
+            }
+            
+            .signature-line {
+                width: 200px;
+                border-top: 1px solid #000;
+                margin-top: 5px;
+            }
+            
+            .website-link {
+                color: var(--primary-color);
+            }
+            
+            .client-subtitle {
+                color: var(--primary-color);
+                margin-bottom: 15px;
+                font-size: 18px;
+                text-align: center;
+            }
+            
+            @media print {
+                body {
+                    padding: 0;
+                }
+                
+                .print-controls {
+                    display: none;
+                }
+            }
+            
+            /* רספונסיביות להדפסה */
+            @media screen and (max-width: 768px) {
+                body {
+                    padding: 10px;
+                }
+                
+                .client-details, .loan-details {
+                    grid-template-columns: 1fr;
+                }
+                
+                .quote-signature {
+                    flex-direction: column;
+                    gap: 30px;
+                    align-items: center;
+                }
+                
+                .signature-line {
+                    width: 100%;
+                    max-width: 200px;
+                }
+                
+                .quote-header {
+                    flex-direction: column-reverse;
+                    text-align: center;
+                }
+                
+                .quote-logo {
+                    margin-bottom: 15px;
+                }
             }
             
             .print-controls {
-                display: none;
+                position: fixed;
+                top: 20px;
+                left: 20px;
+                background: #fff;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+                z-index: 1000;
+            }
+            
+            .print-btn {
+                padding: 8px 15px;
+                background-color: var(--primary-color);
+                color: var(--text-dark);
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-weight: 600;
+                margin-right: 10px;
+            }
+            
+            .save-btn {
+                padding: 8px 15px;
+                background-color: var(--secondary-color);
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-weight: 600;
+            }
+        `;
+        
+        htmlContent += `
+            </style>
+        </head>
+        <body>
+            <div class="print-controls">
+                <button class="print-btn" onclick="window.print()">הדפס</button>
+            </div>
+            <div class="quote-container">
+        `;
+        
+        const quoteContent = document.getElementById('quote-to-print');
+        
+        const tempContainer = document.createElement('div');
+        tempContainer.innerHTML = quoteContent.innerHTML;
+        
+        const logoImg = tempContainer.querySelector('.quote-logo');
+        if (logoImg) {
+            const logoSrc = logoImg.getAttribute('src');
+            if (logoSrc && !logoSrc.startsWith('data:') && !logoSrc.startsWith('http')) {
+                // בניית נתיב מלא ללוגו באמצעות URL הנוכחי
+                const baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
+                logoImg.setAttribute('src', baseUrl + logoSrc);
             }
         }
         
-        .print-controls {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background: #fff;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            z-index: 1000;
-        }
+        const sections = tempContainer.querySelectorAll('.quote-section');
+        sections.forEach(section => {
+            const hasContent = Array.from(section.querySelectorAll('.detail-item')).some(item => 
+                !item.classList.contains('hidden-field'));
+            
+            if (!hasContent) {
+                section.classList.add('hidden-section');
+            }
+        });
         
-        .print-btn {
-            padding: 8px 15px;
-            background-color: var(--primary-color);
-            color: var(--text-dark);
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 600;
-            margin-right: 10px;
-        }
+        htmlContent += tempContainer.innerHTML;
         
-        .save-btn {
-            padding: 8px 15px;
-            background-color: var(--secondary-color);
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-    `;
-    
-    htmlContent += `
-        </style>
-    </head>
-    <body>
-        <div class="print-controls">
-            <button class="print-btn" onclick="window.print()">הדפס</button>
-        </div>
-        <div class="quote-container">
-    `;
-    
-    const quoteContent = document.getElementById('quote-to-print');
-    
-    const tempContainer = document.createElement('div');
-    tempContainer.innerHTML = quoteContent.innerHTML;
-    
-    const logoImg = tempContainer.querySelector('.quote-logo');
-    if (logoImg) {
-        const logoSrc = logoImg.getAttribute('src');
-        if (logoSrc && !logoSrc.startsWith('data:') && !logoSrc.startsWith('http')) {
-            // בניית נתיב מלא ללוגו באמצעות URL הנוכחי
-            const baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
-            logoImg.setAttribute('src', baseUrl + logoSrc);
-        }
+        htmlContent += `
+            </div>
+            <script>            
+                // הסתרת כפתורי ההדפסה והשמירה בעת הדפסה
+                window.addEventListener('beforeprint', function() {
+                    document.querySelector('.print-controls').style.display = 'none';
+                });
+                
+                window.addEventListener('afterprint', function() {
+                    document.querySelector('.print-controls').style.display = 'block';
+                });
+            </script>
+        </body>
+        </html>`;
+        
+        printWindow.document.open();
+        printWindow.document.write(htmlContent);
+        printWindow.document.close();
+        
+        printWindow.addEventListener('load', function() {
+            printWindow.focus();
+        });
     }
-    
-    const sections = tempContainer.querySelectorAll('.quote-section');
-    sections.forEach(section => {
-        const hasContent = Array.from(section.querySelectorAll('.detail-item')).some(item => 
-            !item.classList.contains('hidden-field'));
-        
-        if (!hasContent) {
-            section.classList.add('hidden-section');
-        }
-    });
-    
-    htmlContent += tempContainer.innerHTML;
-    
-    htmlContent += `
-        </div>
-        <script>
-
-            
-            // הסתרת כפתורי ההדפסה והשמירה בעת הדפסה
-            window.addEventListener('beforeprint', function() {
-                document.querySelector('.print-controls').style.display = 'none';
-            });
-            
-            window.addEventListener('afterprint', function() {
-                document.querySelector('.print-controls').style.display = 'block';
-            });
-        </script>
-    </body>
-    </html>`;
-    
-    printWindow.document.open();
-    printWindow.document.write(htmlContent);
-    printWindow.document.close();
-    
-    printWindow.addEventListener('load', function() {
-        printWindow.focus();
-    });
-}
-
     
     document.getElementById('reset-form').addEventListener('click', function() {
         const confirmation = confirm('האם אתה בטוח שברצונך לנקות את כל הנתונים?');
@@ -459,6 +502,61 @@ function exportQuoteAsHTML() {
             checkSectionVisibility();
         }
     });
+
+    // פונקציונליות תפריט מובייל
+    const menuToggle = document.getElementById('menu-toggle');
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.getElementById('overlay');
+    
+    if (menuToggle && sidebar && overlay) {
+        menuToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+            
+            if (sidebar.classList.contains('active')) {
+                menuToggle.textContent = 'סגור';
+                document.body.style.overflow = 'hidden'; // מניעת גלילה
+            } else {
+                menuToggle.textContent = 'תפריט';
+                document.body.style.overflow = ''; // אפשור גלילה
+            }
+        });
+        
+        // סגירת תפריט בלחיצה על השכבה השקופה
+        overlay.addEventListener('click', function() {
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+            menuToggle.textContent = 'תפריט';
+            document.body.style.overflow = '';
+        });
+    }
+    
+    // טיפול באירועי שינוי גודל המסך
+    window.addEventListener('resize', function() {
+        if (window.innerWidth > 768 && sidebar && sidebar.classList.contains('active')) {
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+            menuToggle.textContent = 'תפריט';
+            document.body.style.overflow = '';
+        }
+    });
+    
+    // שיפור טפסים עבור מגע במובייל
+    if (window.innerWidth <= 768) {
+        document.querySelectorAll('input, select, textarea').forEach(function(element) {
+            element.addEventListener('focus', function() {
+                // אם סרגל הצד פתוח במובייל, וודא שהאלמנט נראה
+                if (sidebar.classList.contains('active')) {
+                    const elementRect = this.getBoundingClientRect();
+                    const topOffset = elementRect.top;
+                    
+                    if (topOffset < 80) { // אם האלמנט קרוב מדי לחלק העליון
+                        sidebar.scrollBy(0, topOffset - 80);
+                    }
+                }
+            });
+        });
+    }
 
     initializeFieldVisibility();
 });
